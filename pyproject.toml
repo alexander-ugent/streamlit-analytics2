@@ -1,12 +1,43 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "streamlit_analytics2"
 version = "0.1.0"
-description = "A detailed package description."
+description = "Track & visualize user interactions with your streamlit app."
 authors = [
-    { name = "Your Name", email = "you@example.com" },
+    { name = "444B", email = "contact+pypi@444b.me" },
 ]
-license = "MIT"
+license = { text = "MIT" }
+readme = ".github/README.md"
+repository = "https://github.com/444B/streamlit-analytics2"
+keywords = ["streamlit", "analytics", "visualization"]
+classifiers = [
+    "Programming Language :: Python :: 3.8",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+]
+python-requires = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/444B/streamlit-analytics2"
+
+[project.dependencies]
+dependencies = [
+    "streamlit>=1.30.0",
+    "pandas",
+    "altair",
+    "google-cloud-firestore"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "black",
+    "isort",
+]
+
+[tool.setuptools.dynamic]
+long-description-content-type = "text/markdown"
