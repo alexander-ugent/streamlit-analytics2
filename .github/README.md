@@ -35,12 +35,14 @@ Simple integration with any Streamlit app:
 
 ```python
 import streamlit as st
-import streamlit_analytics2
+import streamlit_analytics2 as streamlit_analytics
 
-with streamlit_analytics2.track():
+with streamlit_analytics.track():
     st.text_input("Write something")
     st.button("Click me")
 ```
+> [!IMPORTANT]
+> The alias ```import streamlit_analytics2 as streamlit_analytics``` allows for backwards compatibility and reduces any unecessary changes in your exisitng codebase. Check out our [Migration Guide](https://github.com/444B/streamlit-analytics2/wiki/0.--Migration-Guide-from-streamlit%E2%80%90analytics-to-streamlit%E2%80%90analytics2) for more info.
 
 All interactions are now tracked, supporting all standard Streamlit widgets.
 
