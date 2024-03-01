@@ -16,7 +16,7 @@ except ImportError:
 
 with streamlit_analytics.track():
     st.title(
-        "👀 Demo app for [streamlit-analytics](https://github.com/jrieke/streamlit-analytics)"
+        "👀 Demo app for [streamlit-analytics](https://github.com/444B/streamlit-analytics2)"
     )
     name = st.text_input("Write your name")
     fav = st.selectbox("Select your favorite", ["cat", "dog", "flower"])

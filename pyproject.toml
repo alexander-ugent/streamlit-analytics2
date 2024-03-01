@@ -1,3 +1,12 @@
 [build-system]
 requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta:__legacy__"
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "streamlit_analytics2"
+version = "0.1.0"
+description = "A detailed package description."
+authors = [
+    { name = "Your Name", email = "you@example.com" },
+]
+license = "MIT"

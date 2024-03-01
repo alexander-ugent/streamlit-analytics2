@@ -17,7 +17,7 @@ We use GitHub to host code, to track issues and feature requests, as well as acc
 
 All code changes happen through pull requests, so we suggest you familiarize yourself with [GitHub Flow](https://guides.github.com/introduction/flow/). Pull requests are the best way to propose changes to the codebase. We actively welcome your pull requests:
 
-1. Fork the repo and create your branch from `main`.
+1. Fork the repo and create your branch from `main`. Make sure to start your branch with the word "test/"
 2. Make sure your code lints.
 3. Issue that pull request!
 
@@ -25,9 +25,9 @@ All code changes happen through pull requests, so we suggest you familiarize you
 
 In short, when you submit code changes, your submissions are understood to be under the same [license](LICENSE.md) that covers the project. Feel free to contact the maintainers if that's a concern.
 
-## Report bugs using Github's [issues](https://github.com/jrieke/streamlit-analytics/issues)
+## Report bugs using Github's [issues](https://github.com/444B/streamlit-analytics2/issues/new/choose)
 
-We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/jrieke/streamlit-analytics/issues/new); it's that easy!
+We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/444B/streamlit-analytics2/issues/new/choose); it's that easy!
 
 **Great Bug Reports** tend to have:
 
@@ -64,18 +64,20 @@ By contributing, you agree that your contributions will be licensed under its [L
 
 2. Clone the repo:
     ```sh
-    git clone https://github.com/jrieke/streamlit-analytics.git
+    git clone https://github.com/444B/streamlit-analytics2.git
     ```
 
 3. Navigate into the repo:
     ```sh
-    cd streamlit-analytics
+    cd streamlit-analytics2
     ```
 
 4. Create a new branch:
     ```sh
     git checkout -b name_of_your_new_branch
     ```
+> [!IMPORTANT]  
+> You need to start the name of your branch with "test/" if you want to test the code changes on a pypi packages. This will trigger a release to test.pypi.com under [streamlit-analytics2](https://test.pypi.org/project/streamlit-analytics2/).
 
 5. Ensure you have Python 3.8.x and pipenv installed on your system. If not, you can install pipenv using pip:
     ```sh
