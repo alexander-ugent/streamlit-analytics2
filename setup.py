@@ -7,23 +7,23 @@ here = Path(__file__).resolve().parent
 
 # Read version from streamlit_analytics/__init__.py
 version_re = r"^__version__ = ['\"]([^'\"]*)['\"]"
-init_text = (here / "streamlit_analytics" / "__init__.py").read_text()
+init_text = (here / "streamlit_analytics2" / "__init__.py").read_text()
 version = re.findall(version_re, init_text)[0]
 
 # Read README.md.
 readme = (here / "README.md").read_text()
 
 setup(
-    name="streamlit-analytics",
+    name=streamlit-analytics,
     version=version,
-    author="Johannes Rieke",
-    author_email="johannes.rieke@gmail.com",
+    author="44 4B",
+    author_email="",
     description="Track & visualize user interactions with your streamlit app",
     long_description=readme,
     long_description_content_type="text/markdown",
-    url="https://github.com/jrieke/streamlit-analytics",
+    url="https://github.com/444B/streamlit-analytics2",
     license="MIT",
-    python_requires=">=3.6",
+    python_requires=">=3.8",
     packages=find_packages(exclude=("tests", "docs", "examples")),
     include_package_data=True,
     install_requires=[

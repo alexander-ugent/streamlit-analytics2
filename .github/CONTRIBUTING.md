@@ -25,9 +25,9 @@ All code changes happen through pull requests, so we suggest you familiarize you
 
 In short, when you submit code changes, your submissions are understood to be under the same [license](LICENSE.md) that covers the project. Feel free to contact the maintainers if that's a concern.
 
-## Report bugs using Github's [issues](https://github.com/jrieke/streamlit-analytics/issues)
+## Report bugs using Github's [issues](https://github.com/444B/streamlit-analytics2/issues/new/choose)
 
-We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/jrieke/streamlit-analytics/issues/new); it's that easy!
+We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/444B/streamlit-analytics2/issues/new/choose); it's that easy!
 
 **Great Bug Reports** tend to have:
 
@@ -64,12 +64,12 @@ By contributing, you agree that your contributions will be licensed under its [L
 
 2. Clone the repo:
     ```sh
-    git clone https://github.com/jrieke/streamlit-analytics.git
+    git clone https://github.com/444B/streamlit-analytics2.git
     ```
 
 3. Navigate into the repo:
     ```sh
-    cd streamlit-analytics
+    cd streamlit-analytics2
     ```
 
 4. Create a new branch:
