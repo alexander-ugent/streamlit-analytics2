@@ -1,17 +1,34 @@
----
-name: Pull Request
-about: Propose changes to the codebase
-title: "[PR] "
-labels: pull request
-assignees: '444B'
+# Pull Request Template
 
----
+## TL;DR
+Provide a brief summary of the changes made.
+- 
 
-**Describe your changes**
-A clear and concise description of what your pull has achieved. Include any relevant motivation and context. List any dependencies that are required for this change.
+## Problem Solved
+1. Describe the problem your changes address. 
+2. Please mention the issue number if relevant
+- 
+-
 
-**Testing performed**
-Describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration.
+## Screenshots
+If applicable, add screenshots to help explain your solution. For adding images, use:
+- 
 
-**Additional context**
-Add any other context or screenshots about the pull request here.
+## Changes Made(Optional)
+List the main changes in bullet points.
+
+- [ ] Change 1...
+- [ ] Change 2...
+- [ ] ...
+
+## Manual Testing
+- [ ] You have manually tested all changes to ensure they work as intended. Replace the [ ] with a [X] if True.
+
+
+**How was this tested?**
+Describe the tests that you ran to verify your changes.
+- 
+
+## Additional Notes
+Include any additional information that might be relevant for reviewers.
+- 
