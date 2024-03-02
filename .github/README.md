@@ -9,7 +9,7 @@
 This fork was initiated due to the inability to collaborate directly on the upstream project, which currently has several unresolved security issues and bugs. Our intention is to maintain a positive relationship with the original project and its creator, focusing on enhancing the tool's reliability and security for the community.
 
 > [!Note]
-> This fork is confirmed to fix the deprecation ```st.experimental_get_query_params``` alerts.    [Context](https://docs.streamlit.io/library/api-reference/utilities/st.experimental_get_query_params)
+> This fork is confirmed to fix the deprecation ```st.experimental_get_query_params``` alerts.    [Context](https://docs.streamlit.io/library/api-reference/utilities/st.experimental_get_query_params)  
 > It also resolved 25 security issues that exist in the upstream (2 Critical, 11 High, 10 Moderate, 2 Low) 
 
 <sup>This project is in active development. We welcome contributions and address security concerns on a best-effort basis, with details available in our [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md) respectively.</sup>
@@ -28,7 +28,7 @@ Only two single characters need to be changed and this has been tested and verif
 2. Change your code import to use 'streamlit_analytics**2** as streamlit_analytics'. Also, just add a '2'. Seen below.
 
 > [!IMPORTANT]
-> This project aims to be backwards compatible with the upstream and migration literally just means adding the number 2 and getting the new package.
+> This project aims to be backwards compatible with the upstream and migration literally just means adding the number 2 and getting the new package.  
 > The above steps should be sufficient but if you need more steps, check out our [Migration Guide](https://github.com/444B/streamlit-analytics2/wiki/0.--Migration-Guide-from-streamlit%E2%80%90analytics-to-streamlit%E2%80%90analytics2).
 
 ## How to Use
