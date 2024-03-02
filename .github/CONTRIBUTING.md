@@ -55,49 +55,58 @@ We use GitHub issues to track public bugs. Report a bug by [opening a new issue]
 
 By contributing, you agree that your contributions will be licensed under its [License](LICENSE.md).
 
-## Guide to Setting Up a Testing/Dev Environment
+## Setting Up Your Development Environment
 
-1. Navigate to the directory you want to clone the repo into:
-    ```sh
-    cd path/to/your/project/location
-    ```
+### 1. Clone the Repository
+Navigate to the directory where you want to clone the repo and run:
+```sh
+git clone https://github.com/444B/streamlit-analytics2.git
+cd streamlit-analytics2
+```
 
-2. Clone the repo:
-    ```sh
-    git clone https://github.com/444B/streamlit-analytics2.git
-    ```
+### 2. Create a New Branch
+Create a new branch for your work:
+```sh
+git checkout -b name_of_your_new_branch
+```
+> **IMPORTANT**: If you want to test code changes on a PyPI package, start the name of your branch with "test/". This will trigger a release to TestPyPI where you can then download and test.
 
-3. Navigate into the repo:
-    ```sh
-    cd streamlit-analytics2
-    ```
+### 3. Install Python and pipenv
+Ensure you have Python 3.8.x installed, then install pipenv:
+```sh
+pip install --user pipenv
+```
 
-4. Create a new branch:
-    ```sh
-    git checkout -b name_of_your_new_branch
-    ```
-> [!IMPORTANT]  
-> You need to start the name of your branch with "test/" if you want to test the code changes on a pypi packages. This will trigger a release to test.pypi.com under [streamlit-analytics2](https://test.pypi.org/project/streamlit-analytics2/).
+### 4. Create a Pipenv Environment
+Set up your pipenv environment with Python 3.8 (due to Streamlit's minimum version requirement):
+```sh
+pipenv --python 3.8
+```
 
-5. Ensure you have Python 3.8.x and pipenv installed on your system. If not, you can install pipenv using pip:
-    ```sh
-    pip install pipenv
-    ```
+### 5. Install Dependencies
+Install all necessary project dependencies:
+```sh
+pipenv install --dev
+```
+> [!NOTE] this might take a few minutes, depending on your network / device.
 
-6. Install project dependencies using pipenv. This step will create a virtual environment specific to this project and install all required dependencies within it:
-    ```sh
-    pipenv install --dev
-    ```
-    This command installs all regular and development dependencies needed for the project. The `--dev` flag ensures that tools required for development, such as linters and testing frameworks, are also installed.
+### 6. Activate the Virtual Environment
+Activate your pipenv environment:
+```sh
+pipenv shell
+```
 
-7. Activate the pipenv virtual environment to start working on the project:
-    ```sh
-    pipenv shell
-    ```
-    This command activates the virtual environment. You need to do this before running any project-related commands to ensure they use the correct Python and dependencies versions.
+### 7. Run a Minimal Example
+Start with running a minimal Streamlit app to ensure everything is set up correctly:
+```sh
+streamlit run examples/minimal.py
+```
 
-8. Run the minimal example file:
-    ```sh
-    streamlit run examples/minimal.py
-    ```
-    At this point, you should see a basic streamlit app and can begin testing any changes you wish to contribute in a PR.
+## Additional Tips
+
+- **Troubleshooting**: If you encounter any issues, please check common pipenv errors and their solutions.
+- **Making Contributions**: After testing your changes, commit them to your branch, push to your fork, and open a pull request against the main repository.
+- **Environment Variables**: If the project requires specific environment variables, set them up according to the project documentation.
+- **Testing and Linting**: Before submitting your pull request, ensure you run any tests and lint your code according to the project's guidelines.
+
+Thank you for contributing to streamlit-analytics2!
