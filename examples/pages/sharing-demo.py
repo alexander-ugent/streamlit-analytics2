@@ -12,7 +12,7 @@ except ImportError:
     subprocess.check_call(
         [sys.executable, "-m", "pip", "install", "streamlit_analytics"]
     )
-    import streamlit_analytics
+    import streamlit_analytics2 as streamlit
 
 with streamlit_analytics.track():
     st.title(
