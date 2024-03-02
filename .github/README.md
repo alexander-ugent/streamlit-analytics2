@@ -9,6 +9,10 @@
 
 This fork was initiated due to the inability to collaborate directly on the upstream project, which currently has several unresolved security issues and bugs. Our intention is to maintain a positive relationship with the original project and its creator, focusing on enhancing the tool's reliability and security for the community.
 
+> [!Note]
+> This fork is confirmed to fix the deprecation ```st.experimental_get_query_params``` alerts. [Context](https://docs.streamlit.io/library/api-reference/utilities/st.experimental_get_query_params)
+> It also resolved 25 security issues that exist in the upstream (2 Critical, 11 High, 10 Moderate, 2 Low) 
+
 <sup>This project is in active development. We welcome contributions and address security concerns on a best-effort basis, with details available in our [SECURITY.md](SECURITY.md).</sup>
 
 
