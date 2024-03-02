@@ -392,11 +392,22 @@ def stop_tracking(
 
     # Dump the counts to json file if `save_to_json` is set.
     # TODO: Make sure this is not locked if writing from multiple threads.
+
+# Assuming 'counts' is your data to be saved and 'save_to_json' is the path to your json file.
     if save_to_json is not None:
-        with Path(save_to_json).open("w") as f:
+        # Create a Path object for the file
+        file_path = Path(save_to_json)
+        
+        # Ensure the directory containing the file exists
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Open the file and dump the json data
+        with file_path.open("w") as f:
             json.dump(counts, f)
+        
         if verbose:
             print("Storing results to file:", save_to_json)
+
 
     # Show analytics results in the streamlit app if `?analytics=on` is set in the URL.
     query_params = st.query_params
