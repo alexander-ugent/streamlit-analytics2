@@ -23,7 +23,7 @@ jobs:
         pip install build twine
     
     - name: Build package
-      run: python -m build
+      run: python -m build --verbose
     
     - name: Upload to TestPyPI
       if: contains(github.ref, 'refs/heads/test/')
