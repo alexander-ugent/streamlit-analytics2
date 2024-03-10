@@ -29,7 +29,7 @@ st.write(f"Streamlit version: {streamlit_version}")
 st.markdown("---")
 
 
-# with streamlit_analytics.track(unsafe_password="test123", save_to_json="path/to/file.json"):
+# with streamlit_analytics.track(unsafe_password="test123"):
 with streamlit_analytics.track(save_to_json="path/to/file.json"):
     st.text_input("Write your name")
     st.selectbox("Select your favorite", ["cat", "dog", "flower"])

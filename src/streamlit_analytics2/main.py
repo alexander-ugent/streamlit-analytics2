@@ -222,7 +222,7 @@ def _wrap_value(func):
             counts["widgets"][label] = {}
 
         formatted_value = replace_empty(value)
-        if type(value) == tuple and len(value) == 2:
+        if type(value) is tuple and len(value) == 2:
             # Double-ended slider or date input with start/end, convert to str.
             formatted_value = f"{value[0]} - {value[1]}"
 

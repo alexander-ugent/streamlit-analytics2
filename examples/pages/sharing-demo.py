@@ -5,17 +5,16 @@ import streamlit_analytics2 as streamlit_analytics
 
 with streamlit_analytics.track():
     st.title(
-        "👀 Demo app for [streamlit-analytics](https://github.com/444B/streamlit-analytics2)"
+        "👀 Demo app for streamlit-analytics2"
     )
     name = st.text_input("Write your name")
     fav = st.selectbox("Select your favorite", ["cat", "dog", "flower"])
     clicked = st.button("Click me")
     if clicked:
         st.write(
-            f"Hello {name}, here's a {fav} for you: :{fav.replace('flower', 'sunflower')}:"
+            f"Hello {name}, here's a {fav} for you: :{fav.replace('flower','sunflower')}:"
         )
 
-    st.write("")
     st.write(
-        "...and now add `?analytics=on` to the URL to see the analytics dashboard 👀"
+        "...add `?analytics=on` to the URL to see the analytics dashboard 👀"
     )
