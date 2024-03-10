@@ -1,6 +1,7 @@
 """
 Main API functions for the user to start and stop analytics tracking.
 """
+
 import datetime
 import json
 import logging
