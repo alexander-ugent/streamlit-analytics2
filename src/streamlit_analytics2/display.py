@@ -1,7 +1,7 @@
 """
 Displays the analytics results within streamlit.
 """
-
+import logging
 import altair as alt
 import pandas as pd
 import streamlit as st
@@ -55,11 +55,7 @@ def show_results(counts, reset_callback, unsafe_password=None):
         )
         st.write("")
 
-        # Plot altair chart with pageviews and script runs.
-        try:
-            alt.themes.enable("streamlit")
-        except:
-            pass  # probably old Streamlit version
+
         df = pd.DataFrame(counts["per_day"])
         base = alt.Chart(df).encode(
             x=alt.X("monthdate(days):O", axis=alt.Axis(title="", grid=True))

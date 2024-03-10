@@ -1,6 +1,8 @@
 import os
 import platform
 import sys
+import streamlit as st
+import streamlit_analytics2 as streamlit_analytics
 
 # Get the directory of the current script
 current_script_path = os.path.dirname(os.path.abspath(__file__))
@@ -11,8 +13,7 @@ src_directory_path = os.path.join(current_script_path, "..", "src")
 # Add the 'src' directory to sys.path at the first position
 sys.path.insert(0, src_directory_path)
 
-import streamlit as st
-import streamlit_analytics2 as streamlit_analytics
+
 
 # Get the software versions
 python_version = platform.python_version()
