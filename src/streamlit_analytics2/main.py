@@ -48,11 +48,12 @@ _orig_time_input = st.time_input
 _orig_file_uploader = st.file_uploader
 _orig_color_picker = st.color_picker
 # new elements, testing
-_orig_download_button = st.download_button
-_orig_link_button = st.link_button
-_orig_page_link = st.page_link
-_orig_toggle = st.toggle
-_orig_camera_input = st.camera_input
+# _orig_download_button = st.download_button
+# _orig_link_button = st.link_button
+# _orig_page_link = st.page_link
+# _orig_toggle = st.toggle
+# _orig_camera_input = st.camera_input
+_orig_chat_input = st.chat_input
 
 _orig_sidebar_button = st.sidebar.button
 _orig_sidebar_checkbox = st.sidebar.checkbox
@@ -69,11 +70,11 @@ _orig_sidebar_time_input = st.sidebar.time_input
 _orig_sidebar_file_uploader = st.sidebar.file_uploader
 _orig_sidebar_color_picker = st.sidebar.color_picker
 # new elements, testing
-_orig_sidebar_download_button = st.sidebar.download_button
-_orig_sidebar_link_button = st.sidebar.link_button
-_orig_sidebar_page_link = st.sidebar.page_link
-_orig_sidebar_toggle = st.sidebar.toggle
-_orig_sidebar_camera_input = st.sidebar.camera_input
+# _orig_sidebar_download_button = st.sidebar.download_button
+# _orig_sidebar_link_button = st.sidebar.link_button
+# _orig_sidebar_page_link = st.sidebar.page_link
+# _orig_sidebar_toggle = st.sidebar.toggle
+# _orig_sidebar_camera_input = st.sidebar.camera_input
 
 
 
@@ -238,6 +239,39 @@ def _wrap_value(func):
 
     return new_func
 
+# Function to replace an empty placeholder
+def replace_empty(placeholder):
+    return placeholder if placeholder else "Chat input"
+
+# Define the wrapper function
+def _wrap_chat_input(func):
+    """
+    Wrap st.chat_input to extend its functionality by directly tracking usage.
+    """
+
+    def new_func(placeholder="Your message", *, key=None, max_chars=None, disabled=False, on_submit=None, args=None, kwargs=None):
+        nonlocal func  # Refer to the func parameter in the outer scope
+        placeholder = replace_empty(placeholder)  # Ensure placeholder is not empty
+        
+        # Use a provided key or create one from the placeholder
+        unique_key = key if key is not None else placeholder
+        
+        # Increment the count for the chat_input widget directly
+        if unique_key not in st.session_state.widget_counts:
+            st.session_state.widget_counts[unique_key] = 0
+        st.session_state.widget_counts[unique_key] += 1
+
+        # Call the original chat_input function
+        value = func(placeholder=placeholder, key=key, max_chars=max_chars, disabled=disabled, on_submit=on_submit, args=args, kwargs=kwargs)
+
+        # Optionally, update session state with the last entered value
+        # This can be useful if you want to track the latest input across reruns
+        st.session_state[f"chat_input_value_{unique_key}"] = value
+
+        # Return the value from the original chat_input
+        return value
+
+    return new_func
 
 def start_tracking(
     verbose: bool = False,
@@ -304,11 +338,12 @@ def start_tracking(
     st.file_uploader = _wrap_file_uploader(_orig_file_uploader)
     st.color_picker = _wrap_value(_orig_color_picker)
     # new elements, testing
-    st.download_button = _wrap_value(_orig_download_button)
-    st.link_button = _wrap_value(_orig_link_button)
-    st.page_link = _wrap_value(_orig_page_link)
-    st.toggle = _wrap_value(_orig_toggle)
-    st.camera_input = _wrap_value(_orig_camera_input)
+    # st.download_button = _wrap_value(_orig_download_button)
+    # st.link_button = _wrap_value(_orig_link_button)
+    # st.page_link = _wrap_value(_orig_page_link)
+    # st.toggle = _wrap_value(_orig_toggle)
+    # st.camera_input = _wrap_value(_orig_camera_input)
+    st.chat_input = _wrap_chat_input(_orig_chat_input)
 
     st.sidebar.button = _wrap_button(_orig_sidebar_button)
     st.sidebar.checkbox = _wrap_checkbox(_orig_sidebar_checkbox)
@@ -325,11 +360,11 @@ def start_tracking(
     st.sidebar.file_uploader = _wrap_file_uploader(_orig_sidebar_file_uploader)
     st.sidebar.color_picker = _wrap_value(_orig_sidebar_color_picker)
     # new elements, testing
-    st.sidebar.download_button = _wrap_value(_orig_sidebar_download_button)
-    st.sidebar.link_button = _wrap_value(_orig_sidebar_link_button)
-    st.sidebar.page_link = _wrap_value(_orig_sidebar_page_link)
-    st.sidebar.toggle = _wrap_value(_orig_sidebar_toggle)
-    st.sidebar.camera_input = _wrap_value(_orig_sidebar_camera_input)
+    # st.sidebar.download_button = _wrap_value(_orig_sidebar_download_button)
+    # st.sidebar.link_button = _wrap_value(_orig_sidebar_link_button)
+    # st.sidebar.page_link = _wrap_value(_orig_sidebar_page_link)
+    # st.sidebar.toggle = _wrap_value(_orig_sidebar_toggle)
+    # st.sidebar.camera_input = _wrap_value(_orig_sidebar_camera_input)
 
 
     # replacements = {
@@ -391,11 +426,12 @@ def stop_tracking(
     st.file_uploader = _orig_file_uploader
     st.color_picker = _orig_color_picker
     # new elements, testing
-    st.download_button = _orig_download_button
-    st.link_button = _orig_link_button
-    st.page_link = _orig_page_link
-    st.toggle = _orig_toggle
-    st.camera_input = _orig_camera_input
+    # st.download_button = _orig_download_button
+    # st.link_button = _orig_link_button
+    # st.page_link = _orig_page_link
+    # st.toggle = _orig_toggle
+    # st.camera_input = _orig_camera_input
+    st.chat_input = _orig_chat_input
 
     st.sidebar.button = _orig_sidebar_button
     st.sidebar.checkbox = _orig_sidebar_checkbox
@@ -412,11 +448,11 @@ def stop_tracking(
     st.sidebar.file_uploader = _orig_sidebar_file_uploader
     st.sidebar.color_picker = _orig_sidebar_color_picker
     # new elements, testing
-    st.sidebar.download_button = _orig_sidebar_download_button
-    st.sidebar.link_button = _orig_sidebar_link_button
-    st.sidebar.page_link = _orig_sidebar_page_link
-    st.sidebar.toggle = _orig_sidebar_toggle
-    st.sidebar.camera_input = _orig_sidebar_camera_input
+    # st.sidebar.download_button = _orig_sidebar_download_button
+    # st.sidebar.link_button = _orig_sidebar_link_button
+    # st.sidebar.page_link = _orig_sidebar_page_link
+    # st.sidebar.toggle = _orig_sidebar_toggle
+    # st.sidebar.camera_input = _orig_sidebar_camera_input
 
     # Save count data to firestore.
     # TODO: Maybe don't save on every iteration but on regular intervals in a background
