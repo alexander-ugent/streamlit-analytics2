@@ -26,11 +26,11 @@ echo '```go' > $filename
 
 {
 echo "Running Black..."
-black --check $directories --verbose 2>&1
+black ../ --check --verbose 2>&1
 echo -e "Complete.\n"
 
 echo "Sorting imports with isort..."
-isort $directories --verbose 2>&1
+isort ../ --verbose 2>&1
 echo -e "Complete.\n"
 
 echo "Linting with Flake8..."

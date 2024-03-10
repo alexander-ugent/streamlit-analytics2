@@ -24,11 +24,11 @@ jobs:
       run: pipenv install --dev --deploy
 
     - name: Check code formatting with Black
-      run: pipenv run black --check src/ examples/
+      run: pipenv run black . --check src/ examples/
       continue-on-error: ${{ github.ref != 'refs/heads/main' }}
 
     - name: Sort imports with isort
-      run: pipenv run isort src/ examples/ --check-only
+      run: pipenv run isort . --check-only --verbose
       continue-on-error: ${{ github.ref != 'refs/heads/main' }}
 
     - name: Lint with Flake8
