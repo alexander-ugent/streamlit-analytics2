@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import streamlit as st
 import streamlit_analytics2 as streamlit_analytics
 

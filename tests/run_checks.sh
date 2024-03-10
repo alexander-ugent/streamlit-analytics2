@@ -43,12 +43,12 @@ echo -e "Complete.\n"
 
 echo "Checking for security issues with bandit..."
 bandit -r $directories 2>&1
-echo -e"Complete.\n"
+echo -e "Complete.\n"
 
 echo "Running pytest with coverage..."
 # Adjust this command based on your pytest setup and directories
 pytest ../ 2>&1
-echo -e"Complete.\n"
+echo -e "Complete.\n"
 
 # Optionally deactivate virtual environment if activated earlier
 # deactivate

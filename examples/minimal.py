@@ -1,6 +1,7 @@
 import os
 import platform
 import sys
+
 import streamlit as st
 import streamlit_analytics2 as streamlit_analytics
 
@@ -12,7 +13,6 @@ src_directory_path = os.path.join(current_script_path, "..", "src")
 
 # Add the 'src' directory to sys.path at the first position
 sys.path.insert(0, src_directory_path)
-
 
 
 # Get the software versions
@@ -28,13 +28,11 @@ st.write(f"Streamlit version: {streamlit_version}")
 
 st.markdown("---")
 
-streamlit_analytics.start_tracking()
-st.text_input("Write your name")
-st.selectbox("Select your favorite", ["cat", "dog", "flower"])
-st.button("Click me")
-prompt = st.chat_input("Send a prompt to the bot")
-if prompt:
-    st.write(f"User has sent the following prompt: {prompt}")
 
-st.title("A [link]()")
-streamlit_analytics.stop_tracking(unsafe_password="test123")
+with streamlit_analytics.track(unsafe_password="test123", save_to_json="path/to/file.json"):
+    st.text_input("Write your name")
+    st.selectbox("Select your favorite", ["cat", "dog", "flower"])
+    st.button("Click me")
+    prompt = st.chat_input("Send a prompt to the bot")
+    if prompt:
+        st.write(f"User has sent the following prompt: {prompt}")

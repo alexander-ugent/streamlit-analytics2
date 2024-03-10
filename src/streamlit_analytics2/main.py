@@ -1,7 +1,7 @@
 """
 Main API functions for the user to start and stop analytics tracking.
 """
-
+import logging
 import datetime
 import json
 from contextlib import contextmanager
@@ -12,6 +12,12 @@ import streamlit as st
 
 from . import display, firestore
 from .utils import replace_empty
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='streamlit-analytics2: %(levelname)s: %(message)s'
+)
 
 # Dict that holds all analytics results. Note that this is persistent across users,
 # as modules are only imported once by a streamlit app.
@@ -282,27 +288,29 @@ def start_tracking(
     if firestore_key_file and not counts["loaded_from_firestore"]:
         firestore.load(counts, firestore_key_file, firestore_collection_name)
         counts["loaded_from_firestore"] = True
-        if verbose:
-            print("Loaded count data from firestore:")
-            print(counts)
-            print()
 
     if load_from_json is not None:
-        if verbose:
-            print("Loading counts from json:", load_from_json)
+        log_msg_prefix = "Loading counts from json: "
         try:
-            with Path(load_from_json).open("r") as f:
-                json_counts = json.load(f)
-                for key in json_counts:
-                    if key in counts:
-                        counts[key] = json_counts[key]
+            # Using Path's read_text method simplifies file reading
+            json_contents = Path(load_from_json).read_text()
+            json_counts = json.loads(json_contents)
+            
+            # Use dict.update() for a cleaner way to merge the counts
+            # This assumes you want json_counts to overwrite existing keys in counts
+            counts.update({k: json_counts[k] for k in json_counts if k in counts})
+            
             if verbose:
-                print("Success! Loaded counts:")
-                print(counts)
-                print()
-        except FileNotFoundError as e:
+                logging.info(f"{log_msg_prefix}{load_from_json}")
+                logging.info("Success! Loaded counts:")
+                logging.info(counts)
+
+        except FileNotFoundError:
             if verbose:
-                print("File not found, proceeding with empty counts.")
+                logging.warning(f"File {load_from_json} not found, proceeding with empty counts.")
+        except Exception as e:
+            # Catch-all for any other exceptions, log the error
+            logging.error(f"Error loading counts from {load_from_json}: {e}")
 
     # Reset session state.
     if "user_tracked" not in st.session_state:
@@ -375,8 +383,7 @@ def start_tracking(
     # }
 
     if verbose:
-        print()
-        print("Tracking script execution with streamlit-analytics...")
+        logging.info("\nTracking script execution with streamlit-analytics...")
 
 
 def stop_tracking(
@@ -392,13 +399,12 @@ def stop_tracking(
     Should be called after `streamlit-analytics.start_tracking()`. This method also
     shows the analytics results below your app if you attach `?analytics=on` to the URL.
     """
-    if verbose:
-        print("Finished script execution. New counts:")
-        print(counts)
-        print("-" * 80)
 
-    # sess = get_session_state
-    # print(sess.state_dict)
+    if verbose:
+        logging.info("Finished script execution. New counts:")
+        logging.info("%s", counts)  # Use %s and pass counts to logging to handle complex objects
+        logging.info("%s", "-" * 80)  # For separators or multi-line messages
+
 
     # Reset streamlit functions.
     st.button = _orig_button

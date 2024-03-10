@@ -1,7 +1,6 @@
 """
 Displays the analytics results within streamlit.
 """
-import logging
 import altair as alt
 import pandas as pd
 import streamlit as st
@@ -54,7 +53,6 @@ def show_results(counts, reset_callback, unsafe_password=None):
             help="Time from initial page load to last widget interaction, summed over all users.",
         )
         st.write("")
-
 
         df = pd.DataFrame(counts["per_day"])
         base = alt.Chart(df).encode(
