@@ -1,6 +1,7 @@
 """
 Displays the analytics results within streamlit.
 """
+
 import altair as alt
 import pandas as pd
 import streamlit as st

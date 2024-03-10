@@ -1,62 +1,73 @@
 #!/bin/bash
 
-# check that the user is in the tests dir/
+# Initial Setup
 if [ ! -f "run_checks.sh" ]; then
     echo "Please run this script from the tests directory."
     exit 1
 fi
 
-# Allow script to continue running even if errors occur
-set +e
+set +e  # Continue on errors
+
+# Lists to keep track of passed and failed tests
+passed_tests=()
+failed_tests=()
 
 # Define directories to check
 directories="../src/ ../examples/"
 
-# Generate a timestamp
+# Timestamp for results file
 timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
-
-# create a markdown file to store the results
 filename="test_results_$timestamp.md"
 
+echo '```go' > $filename
+
+# Function to run checks
+run_check() {
+    echo "Running $1..."
+    $2 $directories 2>&1
+    if [ "$?" -ne 0 ]; then
+        echo "$1 failed."
+        failed_tests+=("$1")
+    else
+        echo "$1 completed successfully."
+        passed_tests+=("$1")
+    fi
+}
+
+{
 # Optionally activate your virtual environment
 # source ../path/to/your/venv/bin/activate
 
-# prepent a go syntax to the file in order to incease readability
-echo '```go' > $filename
+# Run checks
+run_check "Black" "black --check"
+run_check "isort" "isort --check-only"
+run_check "Flake8" "flake8"
+run_check "mypy" "mypy"
+run_check "Bandit" "bandit -r"
+run_check "pytest" "pytest ../ --cov=../src/"
 
-{
-echo "Running Black..."
-black --check $directories 2>&1
-echo -e "Complete.\n"
+# Summary
+echo "Test Summary:"
+if [ ${#failed_tests[@]} -ne 0 ]; then
+    echo "Failed tests:"
+    printf ' - %s\n' "${failed_tests[@]}"
+else
+    echo "All tests passed!"
+fi
 
-echo "Sorting imports with isort..."
-isort $directories 2>&1
-echo -e "Complete.\n"
+if [ ${#passed_tests[@]} -ne 0 ]; then
+    echo "Passed tests:"
+    printf ' - %s\n' "${passed_tests[@]}"
+fi
 
-echo "Linting with Flake8..."
-flake8 $directories 2>&1
-echo -e "Complete.\n"
-
-echo "Static type check with mypy..."
-mypy $directories 2>&1
-echo -e "Complete.\n"
-
-echo "Checking for security issues with bandit..."
-bandit -r $directories 2>&1
-echo -e "Complete.\n"
-
-echo "Running pytest with coverage..."
-# Adjust this command based on your pytest setup and directories
-pytest ../ 2>&1
-echo -e "Complete.\n"
-
-# Optionally deactivate virtual environment if activated earlier
-# deactivate
-
-echo "All checks passed! Read the log file for more details."
 } | tee -a $filename
 
 echo '```' >> $filename
 
-# Optionally deactivate virtual environment if activated earlier
+# Optionally deactivate your virtual environment
 # deactivate
+
+# Exit with non-zero status if there were any failures
+if [ ${#failed_tests[@]} -ne 0 ]; then
+    exit 1
+fi

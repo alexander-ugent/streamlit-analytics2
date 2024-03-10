@@ -1,6 +1,7 @@
 """
 Main API functions for the user to start and stop analytics tracking.
 """
+
 import datetime
 import json
 import logging
@@ -14,8 +15,7 @@ from . import display, firestore
 from .utils import replace_empty
 
 logging.basicConfig(
-    level=logging.INFO,
-    format='streamlit-analytics2: %(levelname)s: %(message)s'
+    level=logging.INFO, format="streamlit-analytics2: %(levelname)s: %(message)s"
 )
 
 # Dict that holds all analytics results. Note that this is persistent across users,
@@ -294,11 +294,11 @@ def start_tracking(
             # Using Path's read_text method simplifies file reading
             json_contents = Path(load_from_json).read_text()
             json_counts = json.loads(json_contents)
-            
+
             # Use dict.update() for a cleaner way to merge the counts
             # This assumes you want json_counts to overwrite existing keys in counts
             counts.update({k: json_counts[k] for k in json_counts if k in counts})
-            
+
             if verbose:
                 logging.info(f"{log_msg_prefix}{load_from_json}")
                 logging.info("Success! Loaded counts:")
@@ -306,7 +306,9 @@ def start_tracking(
 
         except FileNotFoundError:
             if verbose:
-                logging.warning(f"File {load_from_json} not found, proceeding with empty counts.")
+                logging.warning(
+                    f"File {load_from_json} not found, proceeding with empty counts."
+                )
         except Exception as e:
             # Catch-all for any other exceptions, log the error
             logging.error(f"Error loading counts from {load_from_json}: {e}")
@@ -401,9 +403,10 @@ def stop_tracking(
 
     if verbose:
         logging.info("Finished script execution. New counts:")
-        logging.info("%s", counts)  # Use %s and pass counts to logging to handle complex objects
+        logging.info(
+            "%s", counts
+        )  # Use %s and pass counts to logging to handle complex objects
         logging.info("%s", "-" * 80)  # For separators or multi-line messages
-
 
     # Reset streamlit functions.
     st.button = _orig_button
