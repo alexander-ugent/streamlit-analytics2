@@ -30,7 +30,7 @@ black ../ --check --verbose 2>&1
 echo -e "Complete.\n"
 
 echo "Sorting imports with isort..."
-isort ../ --verbose 2>&1
+isort ../src ../examples --verbose 2>&1
 echo -e "Complete.\n"
 
 echo "Linting with Flake8..."

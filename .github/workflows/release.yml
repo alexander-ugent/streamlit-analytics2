@@ -28,7 +28,7 @@ jobs:
       continue-on-error: ${{ github.ref != 'refs/heads/main' }}
 
     - name: Sort imports with isort
-      run: pipenv run isort . --check-only --verbose
+      run: pipenv run isort ./src ./examples --check-only --verbose
       continue-on-error: ${{ github.ref != 'refs/heads/main' }}
 
     - name: Lint with Flake8
