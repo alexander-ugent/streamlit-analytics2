@@ -1,9 +1,9 @@
 """
 Main API functions for the user to start and stop analytics tracking.
 """
-import logging
 import datetime
 import json
+import logging
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Optional, Union
@@ -12,7 +12,6 @@ import streamlit as st
 
 from . import display, firestore
 from .utils import replace_empty
-
 
 logging.basicConfig(
     level=logging.INFO,

@@ -17,6 +17,7 @@ flake8 = "*"
 mypy = "*"
 bandit = "*"
 pytest = "*"
+pandas-stubs = "*"
 
 [requires]
 python_version = "3.8"
