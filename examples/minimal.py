@@ -31,11 +31,8 @@ with streamlit_analytics.track():
     st.text_input("Write your name")
     st.selectbox("Select your favorite", ["cat", "dog", "flower"])
     st.button("Click me")
-
-
-st.title("A [link]()")
-
-
-prompt = st.chat_input("Say something")
-if prompt:
-    st.write(f"User has sent the following prompt: {prompt}")
+    prompt = st.chat_input("Send a prompt to the bot")
+    if prompt:
+        st.write(f"User has sent the following prompt: {prompt}")
+    
+    st.title("A [link]()")

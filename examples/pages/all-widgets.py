@@ -1,5 +1,5 @@
 import streamlit as st
-import streamlit_analytics2 as streamlit
+import streamlit_analytics2 as streamlit_analytics
 from datetime import datetime
 
 with streamlit_analytics.track(verbose=True):
@@ -19,6 +19,9 @@ with streamlit_analytics.track(verbose=True):
     st.time_input("time_input")
     st.file_uploader("file_uploader")
     st.color_picker("color_picker")
+    prompt = st.chat_input("Send a prompt to the bot")
+    if prompt:
+        st.write(f"User has sent the following prompt: {prompt}")
 
     st.sidebar.checkbox("sidebar_checkbox")
     st.sidebar.button("sidebar_button")

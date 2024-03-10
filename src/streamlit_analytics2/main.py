@@ -239,39 +239,30 @@ def _wrap_value(func):
 
     return new_func
 
-# Function to replace an empty placeholder
-def replace_empty(placeholder):
-    return placeholder if placeholder else "Chat input"
-
-# Define the wrapper function
 def _wrap_chat_input(func):
     """
-    Wrap st.chat_input to extend its functionality by directly tracking usage.
+    Wrap a streamlit function that returns a single value (str/int/float/datetime/...),
+    e.g. st.slider, st.text_input, st.number_input, st.text_area, st.date_input,
+    st.time_input, st.color_picker.
     """
 
-    def new_func(placeholder="Your message", *, key=None, max_chars=None, disabled=False, on_submit=None, args=None, kwargs=None):
-        nonlocal func  # Refer to the func parameter in the outer scope
-        placeholder = replace_empty(placeholder)  # Ensure placeholder is not empty
-        
-        # Use a provided key or create one from the placeholder
-        unique_key = key if key is not None else placeholder
-        
-        # Increment the count for the chat_input widget directly
-        if unique_key not in st.session_state.widget_counts:
-            st.session_state.widget_counts[unique_key] = 0
-        st.session_state.widget_counts[unique_key] += 1
+    def new_func(placeholder, *args, **kwargs):
+        value = func(placeholder, *args, **kwargs)
+        if placeholder not in counts["widgets"]:
+            counts["widgets"][placeholder] = {}
 
-        # Call the original chat_input function
-        value = func(placeholder=placeholder, key=key, max_chars=max_chars, disabled=disabled, on_submit=on_submit, args=args, kwargs=kwargs)
+        formatted_value = str(value)
 
-        # Optionally, update session state with the last entered value
-        # This can be useful if you want to track the latest input across reruns
-        st.session_state[f"chat_input_value_{unique_key}"] = value
+        if formatted_value not in counts["widgets"][placeholder]:
+            counts["widgets"][placeholder][formatted_value] = 0
 
-        # Return the value from the original chat_input
+        if formatted_value != st.session_state.state_dict.get(placeholder):
+            counts["widgets"][placeholder][formatted_value] += 1
+        st.session_state.state_dict[placeholder] = formatted_value
         return value
 
     return new_func
+
 
 def start_tracking(
     verbose: bool = False,
