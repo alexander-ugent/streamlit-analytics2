@@ -6,7 +6,7 @@ import datetime
 import json
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Union
+from typing import Optional, Union
 
 import streamlit as st
 
@@ -266,9 +266,9 @@ def _wrap_chat_input(func):
 
 def start_tracking(
     verbose: bool = False,
-    firestore_key_file: str = None,
+    firestore_key_file: Optional[str] = None,
     firestore_collection_name: str = "counts",
-    load_from_json: Union[str, Path] = None,
+    load_from_json: Optional[Union[str, Path]] = None,
 ):
     """
     Start tracking user inputs to a streamlit app.
@@ -380,9 +380,9 @@ def start_tracking(
 
 
 def stop_tracking(
-    unsafe_password: str = None,
-    save_to_json: Union[str, Path] = None,
-    firestore_key_file: str = None,
+    unsafe_password: Optional[str] = None,
+    save_to_json: Optional[Union[str, Path]] = None,
+    firestore_key_file: Optional[str] = None,
     firestore_collection_name: str = "counts",
     verbose: bool = False,
 ):
@@ -481,12 +481,12 @@ def stop_tracking(
 
 @contextmanager
 def track(
-    unsafe_password: str = None,
-    save_to_json: Union[str, Path] = None,
-    firestore_key_file: str = None,
+    unsafe_password: Optional[str] = None,
+    save_to_json: Optional[Union[str, Path]] = None,
+    firestore_key_file: Optional[str] = None,
     firestore_collection_name: str = "counts",
     verbose=False,
-    load_from_json: Union[str, Path] = None,
+    load_from_json: Optional[Union[str, Path]] = None,
 ):
     """
     Context manager to start and stop tracking user inputs to a streamlit app.

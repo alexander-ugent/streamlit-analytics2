@@ -27,12 +27,13 @@ st.write(f"Streamlit version: {streamlit_version}")
 
 st.markdown("---")
 
-with streamlit_analytics.track():
-    st.text_input("Write your name")
-    st.selectbox("Select your favorite", ["cat", "dog", "flower"])
-    st.button("Click me")
-    prompt = st.chat_input("Send a prompt to the bot")
-    if prompt:
-        st.write(f"User has sent the following prompt: {prompt}")
+streamlit_analytics.start_tracking()
+st.text_input("Write your name")
+st.selectbox("Select your favorite", ["cat", "dog", "flower"])
+st.button("Click me")
+prompt = st.chat_input("Send a prompt to the bot")
+if prompt:
+    st.write(f"User has sent the following prompt: {prompt}")
 
-    st.title("A [link]()")
+st.title("A [link]()")
+streamlit_analytics.stop_tracking(unsafe_password="test123")
