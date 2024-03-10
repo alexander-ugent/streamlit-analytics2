@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# check that the user is in the tests dir/
+if [ ! -f "run_checks.sh" ]; then
+    echo "Please run this script from the tests directory."
+    exit 1
+fi
+
 # Allow script to continue running even if errors occur
 set +e
 

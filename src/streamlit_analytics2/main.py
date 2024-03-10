@@ -77,7 +77,6 @@ _orig_sidebar_color_picker = st.sidebar.color_picker
 # _orig_sidebar_camera_input = st.sidebar.camera_input
 
 
-
 def _track_user():
     """Track individual pageviews by storing user id to session state."""
     today = str(datetime.date.today())
@@ -239,6 +238,7 @@ def _wrap_value(func):
 
     return new_func
 
+
 def _wrap_chat_input(func):
     """
     Wrap a streamlit function that returns a single value (str/int/float/datetime/...),
@@ -289,7 +289,7 @@ def start_tracking(
 
     if load_from_json is not None:
         if verbose:
-            print(f"Loading counts from json:", load_from_json)
+            print("Loading counts from json:", load_from_json)
         try:
             with Path(load_from_json).open("r") as f:
                 json_counts = json.load(f)
@@ -302,7 +302,7 @@ def start_tracking(
                 print()
         except FileNotFoundError as e:
             if verbose:
-                print(f"File not found, proceeding with empty counts.")
+                print("File not found, proceeding with empty counts.")
 
     # Reset session state.
     if "user_tracked" not in st.session_state:
@@ -356,7 +356,6 @@ def start_tracking(
     # st.sidebar.page_link = _wrap_value(_orig_sidebar_page_link)
     # st.sidebar.toggle = _wrap_value(_orig_sidebar_toggle)
     # st.sidebar.camera_input = _wrap_value(_orig_sidebar_camera_input)
-
 
     # replacements = {
     #     "button": _wrap_bool,
@@ -458,21 +457,20 @@ def stop_tracking(
     # Dump the counts to json file if `save_to_json` is set.
     # TODO: Make sure this is not locked if writing from multiple threads.
 
-# Assuming 'counts' is your data to be saved and 'save_to_json' is the path to your json file.
+    # Assuming 'counts' is your data to be saved and 'save_to_json' is the path to your json file.
     if save_to_json is not None:
         # Create a Path object for the file
         file_path = Path(save_to_json)
-        
+
         # Ensure the directory containing the file exists
         file_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         # Open the file and dump the json data
         with file_path.open("w") as f:
             json.dump(counts, f)
-        
+
         if verbose:
             print("Storing results to file:", save_to_json)
-
 
     # Show analytics results in the streamlit app if `?analytics=on` is set in the URL.
     query_params = st.query_params
