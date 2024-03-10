@@ -107,8 +107,9 @@ cd tests/
 chmod +x /run_checks.sh
 ./run_check.sh
 ``` 
-This will performs formatting with the following packages:
-- black
+
+This will perform formatting and checks with the following packages:
+- black (code formatting)
 - isort (sorting imports)
 - flake8 (Linting)
 - mypy (Static type checking)
