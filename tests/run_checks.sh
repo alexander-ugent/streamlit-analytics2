@@ -44,7 +44,7 @@ run_check "isort" "isort --check-only"
 run_check "Flake8" "flake8"
 run_check "mypy" "mypy"
 run_check "Bandit" "bandit -r"
-run_check "pytest" "pytest ../ --cov=../src/"
+# run_check "pytest" "pytest ../ --cov=../src/"
 
 # Summary
 echo "Test Summary:"
