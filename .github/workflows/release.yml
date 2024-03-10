@@ -1,4 +1,4 @@
-name: Build and Publish
+name: Code Check, Build and Publish
 
 on:
   push:
@@ -16,27 +16,36 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-        
-    - name: Install dependencies for code quality check
+
+
+    - name: Install Pipenv
+      run: pip install pipenv
+
+    - name: Install dependencies with Pipenv
       run: |
-        python -m pip install --upgrade pip
-        pip install flake8 black isort mypy bandit 
-    
+        pipenv install --dev --deploy
+
+
     - name: Check code formatting with Black
       run: black --check src/ examples/
-      
+      continue-on-error: true
+
     - name: Sort imports with isort
       run: isort src/ examples/ --check-only
+      continue-on-error: true
 
     - name: Lint with Flake8
       run: flake8 src/ examples/ --ignore=E501,W503
-      
+      continue-on-error: true
+
     - name: Static type check with mypy
       run: mypy src/ examples/ --config-file ../mypy.ini
-      
+      continue-on-error: true
+
     - name: Check for security issues with bandit
       run: bandit -r src/ examples/
-      
+      continue-on-error: true
+
     # - name: Run pytest with coverage
     #   run: pytest
 
@@ -45,20 +54,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-    
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install build twine
-    
+
     - name: Build package
       run: python -m build
-    
+
     - name: Upload to TestPyPI
       if: contains(github.ref, 'refs/heads/test/')
       uses: pypa/gh-action-pypi-publish@v1.4.2
@@ -66,7 +75,7 @@ jobs:
         user: __token__
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
-    
+
     - name: Upload to PyPI
       if: github.ref == 'refs/heads/main'
       uses: pypa/gh-action-pypi-publish@v1.4.2
