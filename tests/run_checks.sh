@@ -38,6 +38,7 @@ run_check() {
 # Optionally activate your virtual environment
 # source ../path/to/your/venv/bin/activate
 
+
 # Run checks
 run_check "Black" "black --check"
 run_check "isort" "isort ../src/ ../examples/ --check-only"
