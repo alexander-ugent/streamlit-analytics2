@@ -12,7 +12,7 @@ streamlit-analytics2 = {editable = true, path = "."}
 
 [dev-packages]
 black = "*"
-isort = "5.13.2"
+isort = "*"
 flake8 = "*"
 mypy = "*"
 bandit = "*"
