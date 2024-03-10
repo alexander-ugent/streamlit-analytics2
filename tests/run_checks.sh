@@ -42,7 +42,7 @@ run_check() {
 run_check "Black" "black --check"
 run_check "isort" "isort --check-only"
 run_check "Flake8" "flake8"
-run_check "mypy" "mypy"
+run_check "mypy" "mypy --config-file ../mypy.ini"
 run_check "Bandit" "bandit -r"
 # run_check "pytest" "pytest ../ --cov=../src/"
 
