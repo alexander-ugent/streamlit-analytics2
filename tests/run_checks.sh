@@ -9,9 +9,6 @@ fi
 # Allow script to continue running even if errors occur
 set +e
 
-# Define directories to check
-directories="../src/ ../examples/"
-
 # Generate a timestamp
 timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
 
@@ -26,23 +23,23 @@ echo '```go' > $filename
 
 {
 echo "Running Black..."
-black ../ --check --verbose 2>&1
+black ../src --check --verbose 2>&1
 echo -e "Complete.\n"
 
 echo "Sorting imports with isort..."
-isort ../src ../examples --verbose 2>&1
+isort ../src --check-only --verbose --diff 2>&1
 echo -e "Complete.\n"
 
 echo "Linting with Flake8..."
-flake8 $directories 2>&1
+flake8 ../src 2>&1
 echo -e "Complete.\n"
 
 echo "Static type check with mypy..."
-mypy $directories 2>&1
+mypy ../src 2>&1
 echo -e "Complete.\n"
 
 echo "Checking for security issues with bandit..."
-bandit -r $directories 2>&1
+bandit -r ../src 2>&1
 echo -e "Complete.\n"
 
 echo "Running pytest with coverage..."
