@@ -4,14 +4,19 @@ Main API functions for the user to start and stop analytics tracking.
 
 import datetime
 import json
+import logging
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Union
+from typing import Optional, Union
 
 import streamlit as st
 
 from . import display, firestore
 from .utils import replace_empty
+
+logging.basicConfig(
+    level=logging.INFO, format="streamlit-analytics2: %(levelname)s: %(message)s"
+)
 
 # Dict that holds all analytics results. Note that this is persistent across users,
 # as modules are only imported once by a streamlit app.
@@ -75,7 +80,6 @@ _orig_sidebar_color_picker = st.sidebar.color_picker
 # _orig_sidebar_page_link = st.sidebar.page_link
 # _orig_sidebar_toggle = st.sidebar.toggle
 # _orig_sidebar_camera_input = st.sidebar.camera_input
-
 
 
 def _track_user():
@@ -218,7 +222,7 @@ def _wrap_value(func):
             counts["widgets"][label] = {}
 
         formatted_value = replace_empty(value)
-        if type(value) == tuple and len(value) == 2:
+        if type(value) is tuple and len(value) == 2:
             # Double-ended slider or date input with start/end, convert to str.
             formatted_value = f"{value[0]} - {value[1]}"
 
@@ -238,6 +242,7 @@ def _wrap_value(func):
         return value
 
     return new_func
+
 
 def _wrap_chat_input(func):
     """
@@ -266,9 +271,9 @@ def _wrap_chat_input(func):
 
 def start_tracking(
     verbose: bool = False,
-    firestore_key_file: str = None,
+    firestore_key_file: Optional[str] = None,
     firestore_collection_name: str = "counts",
-    load_from_json: Union[str, Path] = None,
+    load_from_json: Optional[Union[str, Path]] = None,
 ):
     """
     Start tracking user inputs to a streamlit app.
@@ -282,27 +287,31 @@ def start_tracking(
     if firestore_key_file and not counts["loaded_from_firestore"]:
         firestore.load(counts, firestore_key_file, firestore_collection_name)
         counts["loaded_from_firestore"] = True
-        if verbose:
-            print("Loaded count data from firestore:")
-            print(counts)
-            print()
 
     if load_from_json is not None:
-        if verbose:
-            print(f"Loading counts from json:", load_from_json)
+        log_msg_prefix = "Loading counts from json: "
         try:
-            with Path(load_from_json).open("r") as f:
-                json_counts = json.load(f)
-                for key in json_counts:
-                    if key in counts:
-                        counts[key] = json_counts[key]
+            # Using Path's read_text method simplifies file reading
+            json_contents = Path(load_from_json).read_text()
+            json_counts = json.loads(json_contents)
+
+            # Use dict.update() for a cleaner way to merge the counts
+            # This assumes you want json_counts to overwrite existing keys in counts
+            counts.update({k: json_counts[k] for k in json_counts if k in counts})
+
             if verbose:
-                print("Success! Loaded counts:")
-                print(counts)
-                print()
-        except FileNotFoundError as e:
+                logging.info(f"{log_msg_prefix}{load_from_json}")
+                logging.info("Success! Loaded counts:")
+                logging.info(counts)
+
+        except FileNotFoundError:
             if verbose:
-                print(f"File not found, proceeding with empty counts.")
+                logging.warning(
+                    f"File {load_from_json} not found, proceeding with empty counts."
+                )
+        except Exception as e:
+            # Catch-all for any other exceptions, log the error
+            logging.error(f"Error loading counts from {load_from_json}: {e}")
 
     # Reset session state.
     if "user_tracked" not in st.session_state:
@@ -336,27 +345,26 @@ def start_tracking(
     # st.camera_input = _wrap_value(_orig_camera_input)
     st.chat_input = _wrap_chat_input(_orig_chat_input)
 
-    st.sidebar.button = _wrap_button(_orig_sidebar_button)
-    st.sidebar.checkbox = _wrap_checkbox(_orig_sidebar_checkbox)
-    st.sidebar.radio = _wrap_select(_orig_sidebar_radio)
-    st.sidebar.selectbox = _wrap_select(_orig_sidebar_selectbox)
-    st.sidebar.multiselect = _wrap_multiselect(_orig_sidebar_multiselect)
-    st.sidebar.slider = _wrap_value(_orig_sidebar_slider)
-    st.sidebar.select_slider = _wrap_select(_orig_sidebar_select_slider)
-    st.sidebar.text_input = _wrap_value(_orig_sidebar_text_input)
-    st.sidebar.number_input = _wrap_value(_orig_sidebar_number_input)
-    st.sidebar.text_area = _wrap_value(_orig_sidebar_text_area)
-    st.sidebar.date_input = _wrap_value(_orig_sidebar_date_input)
-    st.sidebar.time_input = _wrap_value(_orig_sidebar_time_input)
-    st.sidebar.file_uploader = _wrap_file_uploader(_orig_sidebar_file_uploader)
-    st.sidebar.color_picker = _wrap_value(_orig_sidebar_color_picker)
+    st.sidebar.button = _wrap_button(_orig_sidebar_button)  # type: ignore
+    st.sidebar.checkbox = _wrap_checkbox(_orig_sidebar_checkbox)  # type: ignore
+    st.sidebar.radio = _wrap_select(_orig_sidebar_radio)  # type: ignore
+    st.sidebar.selectbox = _wrap_select(_orig_sidebar_selectbox)  # type: ignore
+    st.sidebar.multiselect = _wrap_multiselect(_orig_sidebar_multiselect)  # type: ignore
+    st.sidebar.slider = _wrap_value(_orig_sidebar_slider)  # type: ignore
+    st.sidebar.select_slider = _wrap_select(_orig_sidebar_select_slider)  # type: ignore
+    st.sidebar.text_input = _wrap_value(_orig_sidebar_text_input)  # type: ignore
+    st.sidebar.number_input = _wrap_value(_orig_sidebar_number_input)  # type: ignore
+    st.sidebar.text_area = _wrap_value(_orig_sidebar_text_area)  # type: ignore
+    st.sidebar.date_input = _wrap_value(_orig_sidebar_date_input)  # type: ignore
+    st.sidebar.time_input = _wrap_value(_orig_sidebar_time_input)  # type: ignore
+    st.sidebar.file_uploader = _wrap_file_uploader(_orig_sidebar_file_uploader)  # type: ignore
+    st.sidebar.color_picker = _wrap_value(_orig_sidebar_color_picker)  # type: ignore
     # new elements, testing
     # st.sidebar.download_button = _wrap_value(_orig_sidebar_download_button)
     # st.sidebar.link_button = _wrap_value(_orig_sidebar_link_button)
     # st.sidebar.page_link = _wrap_value(_orig_sidebar_page_link)
     # st.sidebar.toggle = _wrap_value(_orig_sidebar_toggle)
     # st.sidebar.camera_input = _wrap_value(_orig_sidebar_camera_input)
-
 
     # replacements = {
     #     "button": _wrap_bool,
@@ -376,14 +384,13 @@ def start_tracking(
     # }
 
     if verbose:
-        print()
-        print("Tracking script execution with streamlit-analytics...")
+        logging.info("\nTracking script execution with streamlit-analytics...")
 
 
 def stop_tracking(
-    unsafe_password: str = None,
-    save_to_json: Union[str, Path] = None,
-    firestore_key_file: str = None,
+    unsafe_password: Optional[str] = None,
+    save_to_json: Optional[Union[str, Path]] = None,
+    firestore_key_file: Optional[str] = None,
     firestore_collection_name: str = "counts",
     verbose: bool = False,
 ):
@@ -393,13 +400,13 @@ def stop_tracking(
     Should be called after `streamlit-analytics.start_tracking()`. This method also
     shows the analytics results below your app if you attach `?analytics=on` to the URL.
     """
-    if verbose:
-        print("Finished script execution. New counts:")
-        print(counts)
-        print("-" * 80)
 
-    # sess = get_session_state
-    # print(sess.state_dict)
+    if verbose:
+        logging.info("Finished script execution. New counts:")
+        logging.info(
+            "%s", counts
+        )  # Use %s and pass counts to logging to handle complex objects
+        logging.info("%s", "-" * 80)  # For separators or multi-line messages
 
     # Reset streamlit functions.
     st.button = _orig_button
@@ -424,20 +431,20 @@ def stop_tracking(
     # st.camera_input = _orig_camera_input
     st.chat_input = _orig_chat_input
 
-    st.sidebar.button = _orig_sidebar_button
-    st.sidebar.checkbox = _orig_sidebar_checkbox
-    st.sidebar.radio = _orig_sidebar_radio
-    st.sidebar.selectbox = _orig_sidebar_selectbox
-    st.sidebar.multiselect = _orig_sidebar_multiselect
-    st.sidebar.slider = _orig_sidebar_slider
-    st.sidebar.select_slider = _orig_sidebar_select_slider
-    st.sidebar.text_input = _orig_sidebar_text_input
-    st.sidebar.number_input = _orig_sidebar_number_input
-    st.sidebar.text_area = _orig_sidebar_text_area
-    st.sidebar.date_input = _orig_sidebar_date_input
-    st.sidebar.time_input = _orig_sidebar_time_input
-    st.sidebar.file_uploader = _orig_sidebar_file_uploader
-    st.sidebar.color_picker = _orig_sidebar_color_picker
+    st.sidebar.button = _orig_sidebar_button  # type: ignore
+    st.sidebar.checkbox = _orig_sidebar_checkbox  # type: ignore
+    st.sidebar.radio = _orig_sidebar_radio  # type: ignore
+    st.sidebar.selectbox = _orig_sidebar_selectbox  # type: ignore
+    st.sidebar.multiselect = _orig_sidebar_multiselect  # type: ignore
+    st.sidebar.slider = _orig_sidebar_slider  # type: ignore
+    st.sidebar.select_slider = _orig_sidebar_select_slider  # type: ignore
+    st.sidebar.text_input = _orig_sidebar_text_input  # type: ignore
+    st.sidebar.number_input = _orig_sidebar_number_input  # type: ignore
+    st.sidebar.text_area = _orig_sidebar_text_area  # type: ignore
+    st.sidebar.date_input = _orig_sidebar_date_input  # type: ignore
+    st.sidebar.time_input = _orig_sidebar_time_input  # type: ignore
+    st.sidebar.file_uploader = _orig_sidebar_file_uploader  # type: ignore
+    st.sidebar.color_picker = _orig_sidebar_color_picker  # type: ignore
     # new elements, testing
     # st.sidebar.download_button = _orig_sidebar_download_button
     # st.sidebar.link_button = _orig_sidebar_link_button
@@ -458,21 +465,20 @@ def stop_tracking(
     # Dump the counts to json file if `save_to_json` is set.
     # TODO: Make sure this is not locked if writing from multiple threads.
 
-# Assuming 'counts' is your data to be saved and 'save_to_json' is the path to your json file.
+    # Assuming 'counts' is your data to be saved and 'save_to_json' is the path to your json file.
     if save_to_json is not None:
         # Create a Path object for the file
         file_path = Path(save_to_json)
-        
+
         # Ensure the directory containing the file exists
         file_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         # Open the file and dump the json data
         with file_path.open("w") as f:
             json.dump(counts, f)
-        
+
         if verbose:
             print("Storing results to file:", save_to_json)
-
 
     # Show analytics results in the streamlit app if `?analytics=on` is set in the URL.
     query_params = st.query_params
@@ -483,12 +489,12 @@ def stop_tracking(
 
 @contextmanager
 def track(
-    unsafe_password: str = None,
-    save_to_json: Union[str, Path] = None,
-    firestore_key_file: str = None,
+    unsafe_password: Optional[str] = None,
+    save_to_json: Optional[Union[str, Path]] = None,
+    firestore_key_file: Optional[str] = None,
     firestore_collection_name: str = "counts",
     verbose=False,
-    load_from_json: Union[str, Path] = None,
+    load_from_json: Optional[Union[str, Path]] = None,
 ):
     """
     Context manager to start and stop tracking user inputs to a streamlit app.

@@ -134,5 +134,9 @@ dmypy.json
 .pyre/
 
 
-streamlit_analytics2.egg-info
-dist/
+# Custom added by 444b
+flake8
+tree
+black
+test_results_*
+path/to/json.file

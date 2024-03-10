@@ -12,6 +12,12 @@ streamlit-analytics2 = {editable = true, path = "."}
 
 [dev-packages]
 black = "*"
+isort = "*"
+flake8 = "*"
+mypy = "*"
+bandit = "*"
+pytest = "*"
+pandas-stubs = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
