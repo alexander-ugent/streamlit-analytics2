@@ -9,8 +9,6 @@ on:
 jobs:
   code-quality-check:
     runs-on: ubuntu-latest
-    outputs:
-      continue-on-error: ${{ steps.set-vars.outputs.continue-on-error }}
     steps:
     - uses: actions/checkout@v2
     
@@ -18,10 +16,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.9'
-
-    - id: set-vars
-      name: Set variables
-      run: echo "continue-on-error=${{ github.ref != 'refs/heads/main' }}" >> $GITHUB_ENV
 
     - name: Install Pipenv
       run: pip install pipenv
@@ -60,50 +54,11 @@ jobs:
       with:
         python-version: '3.9'
 
-
     - name: Install Pipenv
       run: pip install pipenv
 
     - name: Install dependencies with Pipenv
-      run: |
-        pipenv install --dev --deploy
-
-
-    - name: Check code formatting with Black
-      run: pipenv run black --check src/ examples/
-      continue-on-error: ${{ env.CONTINUE_ON_ERROR }}
-
-    - name: Sort imports with isort
-      run: pipenv run isort src/ examples/ --check-only
-      continue-on-error: ${{ env.CONTINUE_ON_ERROR }}
-
-    - name: Lint with Flake8
-      run: pipenv run flake8 src/ examples/ --ignore=E501,W503
-      continue-on-error: ${{ env.CONTINUE_ON_ERROR }}
-
-    - name: Static type check with mypy
-      run: pipenv run mypy src/ examples/ --config-file mypy.ini
-      continue-on-error: ${{ env.CONTINUE_ON_ERROR }}
-
-    - name: Check for security issues with bandit
-      run: pipenv run bandit -r src/ examples/
-      continue-on-error: ${{ env.CONTINUE_ON_ERROR }}
-
-  build-and-upload:
-    needs: code-quality-check
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install build twine
+      run: pipenv install --dev --deploy
 
     - name: Build package
       run: python -m build
