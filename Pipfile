@@ -18,6 +18,8 @@ mypy = "*"
 bandit = "*"
 pytest = "*"
 pandas-stubs = "*"
+build = "*"
+twine = "*"
 
 [requires]
 python_version = "3.9"

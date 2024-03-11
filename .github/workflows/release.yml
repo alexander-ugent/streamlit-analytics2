@@ -17,11 +17,10 @@ jobs:
       with:
         python-version: '3.9'
 
-    - name: Install Pipenv
-      run: pip install pipenv
-
-    - name: Install dependencies with Pipenv
-      run: pipenv install --dev --deploy
+    - name: Install Pipenv and dependencies
+      run: |
+        pip install pipenv
+        pipenv install --dev --deploy
 
     - name: Check code formatting with Black
       run: pipenv run black src/ --check
@@ -54,14 +53,13 @@ jobs:
       with:
         python-version: '3.9'
 
-    - name: Install Pipenv
-      run: pip install pipenv
-
-    - name: Install dependencies with Pipenv
-      run: pipenv install --dev --deploy
+    - name: Install Pipenv and dependencies
+      run: |
+        pip install pipenv
+        pipenv install --dev --deploy
 
     - name: Build package
-      run: python -m build
+      run: pipenv run python -m build
 
     - name: Upload to TestPyPI
       if: contains(github.ref, 'refs/heads/test/')
