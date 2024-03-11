@@ -139,4 +139,4 @@ flake8
 tree
 black
 test_results_*
-path/to/json.file
+path/
