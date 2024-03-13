@@ -62,9 +62,9 @@ Using streamlit_analytics.track() is the recommended method and will become the 
 
 ## Moving Forward
 
-- **TODOs and Feature Requests**: We've transitioned our roadmap and feature requests to [GitHub Issues](https://github.com/your-repo/streamlit-analytics2/issues). Feel free to contribute ideas or report bugs!
-- **Advanced Configuration**: Detailed guidance on advanced setup (including password protection and database integration) options are available in our [Project Wiki](https://github.com/444B/streamlit-analytics2/wiki).
-**Improved Performance**: We are focused on providing a use of streamlit-analytics2 that doesn't impact the performance of your app.  
+- **TODOs and Feature Requests**: We've transitioned our roadmap and feature requests to [GitHub Issues](https://github.com/your-repo/streamlit-analytics2/issues). Feel free to contribute ideas or report bugs!  
+- **Advanced Configuration**: Detailed guidance on advanced setup (including password protection and database integration) options are available in our [Project Wiki](https://github.com/444B/streamlit-analytics2/wiki).  
+- **Improved Performance**: We are focused on providing a use of streamlit-analytics2 that doesn't impact the performance of your app.  
 All suggestions and inputs are welcome on our [forum](https://github.com/444B/streamlit-analytics2/discussions)
 
 ## Contributing
