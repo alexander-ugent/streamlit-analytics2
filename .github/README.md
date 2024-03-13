@@ -58,7 +58,7 @@ def main():
     st.write("Hello, World!")
     st.button("Click me")
 ```
-Using streamlit_analytics.track() is the reccomended method and will become the primary way to initiate streamlit-analytics2 after the [upcoming v.1.0.0](https://github.com/444B/streamlit-analytics2/issues/53) release.
+Using streamlit_analytics.track() is the recommended method and will become the primary way to initiate streamlit-analytics2 after the [upcoming v.1.0.0](https://github.com/444B/streamlit-analytics2/issues/53) release.
 
 ## Moving Forward
 
